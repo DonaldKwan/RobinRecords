@@ -58,4 +58,17 @@ public class Position {
     public Date getSellDate() {
         return sellDate;
     }
+
+    public ORDER getBuyOrder(){
+        return BUY_ORDER;
+    }
+
+    public ORDER getSellOrder(){
+        return sellOrder;
+    }
+
+    public void setSellOrder(ORDER sellOrder){
+        this.sellOrder = sellOrder;
+    }
+
 }
