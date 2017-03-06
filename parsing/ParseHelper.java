@@ -2,6 +2,8 @@ package com.eahlbrecht.robinrecords.parsing;
 
 import com.eahlbrecht.robinrecords.market.ORDER;
 
+import java.util.Date;
+
 /**
  * Created by defq0n on 3/4/17.
  *
@@ -73,6 +75,11 @@ public class ParseHelper {
             }
         }
         return Integer.parseInt(BUFFER.substring(startingIndex, endingIndex));
+    }
+
+    public Date parseDate(){
+        // TODO
+        return null;
     }
 
     public boolean validEmail(){

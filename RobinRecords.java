@@ -28,11 +28,11 @@ public class RobinRecords {
             String buffer = MailHelper.getMessageContent(records.get(i), new StringBuilder());
             ParseHelper ph = new ParseHelper(buffer);
             if(ph.validEmail()) {
-                //System.out.println(buffer + "\n\n\n\n\n");
-                System.out.println("Ticker: " + ph.parseTicker());
-                System.out.println("Share Amount: " + ph.parseShareAmount());
-                System.out.println("Share Price: " + ph.parseSharePrice());
-                System.out.println("Order Type: " + ph.parseOrderType().getString());
+                System.out.println(buffer + "\n\n\n\n\n");
+//                System.out.println("Ticker: " + ph.parseTicker());
+//                System.out.println("Share Amount: " + ph.parseShareAmount());
+//                System.out.println("Share Price: " + ph.parseSharePrice());
+//                System.out.println("Order Type: " + ph.parseOrderType().getString());
             }
         }
 //        String buffer = MailHelper.getMessageContent(records.get(records.size()-1), new StringBuilder());
