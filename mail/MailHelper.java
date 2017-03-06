@@ -63,23 +63,26 @@ public class MailHelper {
         return records;
     }
 
-    public static void getMessageContent(Part p) throws MessagingException {
+    public static String getMessageContent(Part p, StringBuilder builder) throws MessagingException {
         if(p instanceof Message){
-            System.out.println("From: " + ((Message) p).getFrom()[0].toString());
-            System.out.println("Date: " + ((Message) p).getReceivedDate().toString());
+            //System.out.println("From: " + ((Message) p).getFrom()[0].toString());
+            //System.out.println("Date: " + ((Message) p).getReceivedDate().toString());
         }
         try {
             if(p.isMimeType("text/plain")){
-                System.out.println((String) p.getContent());
+                //System.out.println((String) p.getContent());
+                builder.append((String) p.getContent());
             } else if(p.isMimeType("multipart/*")){
                 Multipart mp = (Multipart) p.getContent();
                 for(int i = 0; i < mp.getCount(); i++){
-                    getMessageContent(mp.getBodyPart(i));
+                    getMessageContent(mp.getBodyPart(i), builder);
                 }
             }
+            return builder.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

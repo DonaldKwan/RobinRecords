@@ -11,24 +11,24 @@ public class Position {
 
     private final String TICKER;
     private final double SHARE_PRICE;
-    private final double TOTAL_PRICE;
+    private final int SHARE_AMOUNT;
     private final Date BUY_DATE;
     private final ORDER BUY_ORDER;
     private ORDER sellOrder;
     private Date sellDate;
 
-    public Position(String ticker, double sharePrice, double totalPrice, Date buyDate, ORDER buyOrder){
+    public Position(String ticker, double sharePrice, int shareAmount, Date buyDate, ORDER buyOrder){
         TICKER = ticker;
         SHARE_PRICE = sharePrice;
-        TOTAL_PRICE = totalPrice;
+        SHARE_AMOUNT = shareAmount;
         BUY_DATE = buyDate;
         BUY_ORDER = buyOrder;
     }
 
-    public Position(String ticker, double sharePrice, double totalPrice, Date buyDate, ORDER buyOrder, Date sellDate, ORDER sellOrder){
+    public Position(String ticker, double sharePrice, int shareAmount, Date buyDate, ORDER buyOrder, Date sellDate, ORDER sellOrder){
         TICKER = ticker;
         SHARE_PRICE = sharePrice;
-        TOTAL_PRICE = totalPrice;
+        SHARE_AMOUNT = shareAmount;
         BUY_DATE = buyDate;
         BUY_ORDER = buyOrder;
         this.sellDate = sellDate;
@@ -43,8 +43,8 @@ public class Position {
         return SHARE_PRICE;
     }
 
-    public double getTotalPrice() {
-        return TOTAL_PRICE;
+    public int getShareAmount() {
+        return SHARE_AMOUNT;
     }
 
     public Date getBuyDate() {

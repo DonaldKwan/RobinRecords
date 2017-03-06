@@ -4,7 +4,7 @@ package com.eahlbrecht.robinrecords.market;
  * Created by defq0n on 3/5/17.
  */
 public enum ORDER {
-    MARKET("Market Order"), LIMIT("Limit Order"), STOP_LOSS("Stop Loss"), STOP_LIMIT("Stop Limit");
+    MARKET("market order"), LIMIT("limit order"), STOP_LOSS("stop loss"), STOP_LIMIT("stop limit");
 
     private String orderString;
 
