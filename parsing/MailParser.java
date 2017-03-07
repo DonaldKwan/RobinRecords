@@ -1,7 +1,10 @@
 package com.eahlbrecht.robinrecords.parsing;
 
 import com.eahlbrecht.robinrecords.market.ORDER;
+import com.eahlbrecht.robinrecords.market.Position;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import java.util.Date;
 
 /**
@@ -9,11 +12,11 @@ import java.util.Date;
  *
  * Class used for parsing email and file data
  */
-public class ParseHelper {
+public class MailParser {
 
     private final String BUFFER;
 
-    public ParseHelper(String buffer){
+    public MailParser(String buffer){
         BUFFER = buffer;
     }
 
@@ -44,7 +47,7 @@ public class ParseHelper {
 
     public double parseSharePrice(){
         int offset = 17;
-        int startingIndex = BUFFER.indexOf("average price of ") + 17;
+        int startingIndex = BUFFER.indexOf("average price of ") + offset;
         int endingIndex = 0;
         for(int i = startingIndex; i < BUFFER.length(); i++){
             if(Character.isDigit(BUFFER.charAt(i)) || BUFFER.charAt(i) == '.'){
@@ -77,13 +80,21 @@ public class ParseHelper {
         return Integer.parseInt(BUFFER.substring(startingIndex, endingIndex));
     }
 
-    public Date parseDate(){
-        // TODO
+    public static Date parseDate(Message message){
+        try {
+            return message.getSentDate();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     public boolean validEmail(){
         return BUFFER.contains("was executed");
+    }
+
+    public Position newPosition(Message currentMessage) {
+        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(currentMessage), parseOrderType());
     }
 
 }

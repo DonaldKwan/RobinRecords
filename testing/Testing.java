@@ -2,7 +2,7 @@ package com.eahlbrecht.robinrecords.testing;
 
 import com.eahlbrecht.robinrecords.Credentials;
 import com.eahlbrecht.robinrecords.mail.MailHelper;
-import com.eahlbrecht.robinrecords.parsing.ParseHelper;
+import com.eahlbrecht.robinrecords.parsing.MailParser;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -24,9 +24,11 @@ public class Testing {
 
         for(int i = 0; i < records.size(); i++){
             String buffer = MailHelper.getMessageContent(records.get(i), new StringBuilder());
-            ParseHelper ph = new ParseHelper(buffer);
+            MailParser ph = new MailParser(buffer);
             if(ph.validEmail()) {
-                System.out.println(buffer + "\n\n\n\n\n");
+                System.out.println(ph.newPosition(records.get(i)).toString());
+//                System.out.println(records.get(i).getSentDate().toString());
+//                System.out.println(buffer + "\n\n\n\n\n");
 //                System.out.println("Ticker: " + ph.parseTicker());
 //                System.out.println("Share Amount: " + ph.parseShareAmount());
 //                System.out.println("Share Price: " + ph.parseSharePrice());
@@ -34,7 +36,7 @@ public class Testing {
             }
         }
 //        String buffer = MailHelper.getMessageContent(records.get(records.size()-1), new StringBuilder());
-//        ParseHelper ph = new ParseHelper(buffer);
+//        MailParser ph = new MailParser(buffer);
 //        System.out.println(buffer + "\n\n\n\n\n");
 //        System.out.println("Ticker: " + ph.parseTicker());
 //        System.out.println("Share Amount: " + ph.parseShareAmount());

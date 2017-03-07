@@ -64,13 +64,8 @@ public class MailHelper {
     }
 
     public static String getMessageContent(Part p, StringBuilder builder) throws MessagingException {
-        if(p instanceof Message){
-            //System.out.println("From: " + ((Message) p).getFrom()[0].toString());
-            //System.out.println("Date: " + ((Message) p).getReceivedDate().toString());
-        }
         try {
             if(p.isMimeType("text/plain")){
-                //System.out.println((String) p.getContent());
                 builder.append((String) p.getContent());
             } else if(p.isMimeType("multipart/*")){
                 Multipart mp = (Multipart) p.getContent();
