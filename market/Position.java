@@ -2,14 +2,12 @@ package com.eahlbrecht.robinrecords.market;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by defq0n on 3/4/17.
  *
- * Keep track of current stock position
+ * Position encapsulates all necessary information about an executed order.
  */
 public class Position {
 
@@ -29,27 +27,56 @@ public class Position {
         totalPrice = new BigDecimal(sharePrice * shareAmount).setScale(2, RoundingMode.HALF_EVEN);
     }
 
-
+    /**
+     * Returns the companies ticker.
+     *
+     * @return  the companies ticker
+     * */
     public String getTicker() {
         return TICKER;
     }
 
+    /**
+     * Returns the stocks share price when executed.
+     *
+     * @return  the executed stock share price
+     * */
     public BigDecimal getSharePrice() {
         return SHARE_PRICE;
     }
 
+    /**
+     * Returns the amount of shares ordered.
+     *
+     * @return  the amount of ordered shares
+     * */
     public int getShareAmount() {
         return SHARE_AMOUNT;
     }
 
+    /**
+     * Returns the Date of execution.
+     *
+     * @return  the date of order execution
+     * */
     public Date getDate() {
         return DATE;
     }
 
+    /**
+     * Returns the Order type.
+     *
+     * @return  the Order type
+     * */
     public ORDER getOrderType(){
         return ORDER_TYPE;
     }
 
+    /**
+     * The total price of the order.
+     *
+     * @return  the price of the order
+     * */
     public BigDecimal getTotalPrice(){
         return totalPrice;
     }

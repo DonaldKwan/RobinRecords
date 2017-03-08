@@ -19,18 +19,36 @@ public class FileHelper {
         this.file = new File(dir, textFile);
     }
 
+    /**
+     * Returns the name of the text file.
+     *
+     * @return  the name of the text file
+     * */
     public String getTextFile() {
         return textFile;
     }
 
+    /**
+     * Sets the name of the text file.
+     * */
     public void setTextFile(String textFile) {
         this.textFile = textFile;
     }
 
+    /**
+     * Returns whether or not the file current exists,
+     *
+     * @return  true if the file exists
+     * */
     public boolean fileExists(){
         return file.exists();
     }
 
+    /**
+     * Creates the text file, option to overwrite if the file already exists.
+     *
+     * @return  true if the file was successfully created or overwritten
+     * */
     public boolean createFile(){
         if (file.exists()) {
             boolean overwrite = overwriteHelper();
@@ -48,6 +66,9 @@ public class FileHelper {
         return false;
     }
 
+    /**
+     * Helper function to createFile().
+     * */
     private void createFileHelper(){
         try {
             if(!dir.exists()){
@@ -59,6 +80,11 @@ public class FileHelper {
         }
     }
 
+    /**
+     * Helper function, used to overwrite a file.
+     *
+     * @return true if the file is overwritten
+     * */
     private boolean overwriteHelper(){
         Scanner scanner = new Scanner(System.in);
         String input;
@@ -74,6 +100,11 @@ public class FileHelper {
         return false;
     }
 
+    /**
+     * Reads the content of the file and returns it as a String.
+     *
+     * @return  the content of the file
+     * */
     public String readFile(){
         if(file.exists()) {
             BufferedReader reader;
@@ -95,6 +126,12 @@ public class FileHelper {
         return null;
     }
 
+    /**
+     * Appends the String to the current file.
+     *
+     * @param   writeString the string to write to the file
+     * @return              true if the string was appended successfully
+     * */
     public boolean writeToFile(String writeString){
         if(file.exists()) {
             String currentFileString = readFile();

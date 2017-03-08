@@ -11,22 +11,30 @@ import java.util.Date;
 /**
  * Created by defq0n on 3/4/17.
  *
- * Class used for parsing email and file data
+ * MailParser takes a message as a parameter, and therefore retrieves various valuable information
+ * about the current message.
  */
 public class MailParser {
+
+    /*
+    Side note: I don't have much experience parsing information, but this class will work fine for all
+    current emails from Robinhood. May have to be updates in the future if the structure of their messages
+    changes.
+    */
 
     private String buffer;
     private final Message MESSAGE;
 
     public MailParser(Message message){
         MESSAGE = message;
-        try {
-            buffer = MailHelper.getMessageContent(message, new StringBuilder());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        buffer = MailHelper.getMessageContent(message, new StringBuilder());
     }
 
+    /**
+     * Parses the message and returns the order type.
+     *
+     * @return  the order type, otherwise null if the order can't be parsed
+     * */
     public ORDER parseOrderType(){
         String buffer = this.buffer.toLowerCase();
         for(ORDER order : ORDER.values()){
@@ -37,6 +45,11 @@ public class MailParser {
         return null;
     }
 
+    /**
+     * Parses the message and returns the companies ticker.
+     *
+     * @return  the companies ticker
+     * */
     public String parseTicker(){
         int offset = 10;
         int maxTickerLength = 5;
@@ -52,6 +65,11 @@ public class MailParser {
         return newBuffer;
     }
 
+    /**
+     * Parses the message and returns the share price.
+     *
+     * @return  the share price
+     * */
     public double parseSharePrice(){
         int offset = 17;
         int startingIndex = buffer.indexOf("average price of ") + offset;
@@ -70,6 +88,11 @@ public class MailParser {
         return Double.parseDouble(buffer.substring(startingIndex, endingIndex));
     }
 
+    /**
+     * Parses the message and returns how many shares were bought/sold.
+     *
+     * @return  the share amount
+     * */
     public int parseShareAmount(){
         int startingIndex = 0;
         int endingIndex = 0;
@@ -87,6 +110,11 @@ public class MailParser {
         return Integer.parseInt(buffer.substring(startingIndex, endingIndex));
     }
 
+    /**
+     * Parses the message and returns the date and time the order was executed.
+     *
+     * @return  the order date and time
+     * */
     public Date parseDate(){
         try {
             return MESSAGE.getSentDate();
@@ -96,10 +124,21 @@ public class MailParser {
         return null;
     }
 
+    /**
+     * Returns whether the current message from Robinhood is a valid email - meaning
+     * there was an order placed.
+     *
+     * @return true if the email is valid
+     * */
     public boolean validEmail(){
         return buffer.contains("was executed");
     }
 
+    /**
+     * Returns a new position object, encapsulating all the needed information about the order.
+     *
+     * @return new position object
+     * */
     public Position newPosition(Message currentMessage) {
         return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType());
     }

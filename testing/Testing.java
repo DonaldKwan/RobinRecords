@@ -15,13 +15,7 @@ public class Testing {
 
     public static void testParsing() throws MessagingException {
         Message[] messages = MailHelper.retrieveMessages(Credentials.username, Credentials.password, MailHelper.GMAIL.PROTOCOL_URI.getContent(), MailHelper.GMAIL.PROTOCOL.getContent(), MailHelper.GMAIL.HOST.getContent());
-        ArrayList<Message> records = MailHelper.getRobinhoodEmails(messages, messages.length, 100);
-        if(records.size() != 0){
-            System.out.println("" + records.size());
-        } else {
-            System.out.println("none");
-        }
-
+        ArrayList<Message> records = MailHelper.getRobinhoodEmails(messages, 100);
         for(int i = 0; i < records.size(); i++){
             MailParser ph = new MailParser(records.get(i));
             if(ph.validEmail()) {
