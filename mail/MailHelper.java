@@ -44,10 +44,8 @@ public class MailHelper {
     }
 
     public static ArrayList<Message> getRobinhoodEmails(Message[] inbox, int inboxSize, int numberToCheck){
-        int counter = 0;
         ArrayList<Message> records = new ArrayList<>();
         for(int i  = inboxSize - numberToCheck, n = inbox.length; i < n; i++){
-            System.out.println(i);
             Message currentMessage = inbox[i];
             try {
                 Address[] senders = currentMessage.getFrom();

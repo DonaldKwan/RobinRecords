@@ -1,5 +1,6 @@
 package com.eahlbrecht.robinrecords.parsing;
 
+import com.eahlbrecht.robinrecords.mail.MailHelper;
 import com.eahlbrecht.robinrecords.market.ORDER;
 import com.eahlbrecht.robinrecords.market.Position;
 
@@ -14,14 +15,20 @@ import java.util.Date;
  */
 public class MailParser {
 
-    private final String BUFFER;
+    private String buffer;
+    private final Message MESSAGE;
 
-    public MailParser(String buffer){
-        BUFFER = buffer;
+    public MailParser(Message message){
+        MESSAGE = message;
+        try {
+            buffer = MailHelper.getMessageContent(message, new StringBuilder());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     public ORDER parseOrderType(){
-        String buffer = BUFFER.toLowerCase();
+        String buffer = this.buffer.toLowerCase();
         for(ORDER order : ORDER.values()){
             if(buffer.contains(order.getString())){
                 return order;
@@ -33,8 +40,8 @@ public class MailParser {
     public String parseTicker(){
         int offset = 10;
         int maxTickerLength = 5;
-        int startingIndex = BUFFER.indexOf("shares of ") + offset;
-        String newBuffer = BUFFER.substring(startingIndex, startingIndex + maxTickerLength);
+        int startingIndex = buffer.indexOf("shares of ") + offset;
+        String newBuffer = buffer.substring(startingIndex, startingIndex + maxTickerLength);
         if(newBuffer.contains(" ") || newBuffer.contains(".")){
             if(newBuffer.contains(" ")){
                 return newBuffer.substring(0, newBuffer.indexOf(" "));
@@ -47,42 +54,42 @@ public class MailParser {
 
     public double parseSharePrice(){
         int offset = 17;
-        int startingIndex = BUFFER.indexOf("average price of ") + offset;
+        int startingIndex = buffer.indexOf("average price of ") + offset;
         int endingIndex = 0;
-        for(int i = startingIndex; i < BUFFER.length(); i++){
-            if(Character.isDigit(BUFFER.charAt(i)) || BUFFER.charAt(i) == '.'){
+        for(int i = startingIndex; i < buffer.length(); i++){
+            if(Character.isDigit(buffer.charAt(i)) || buffer.charAt(i) == '.'){
                 startingIndex = i;
                 int j = i;
-                while(Character.isDigit(BUFFER.charAt(j)) || BUFFER.charAt(j) == '.'){
+                while(Character.isDigit(buffer.charAt(j)) || buffer.charAt(j) == '.'){
                     j++;
                 }
                 endingIndex = j;
                 break;
             }
         }
-        return Double.parseDouble(BUFFER.substring(startingIndex, endingIndex));
+        return Double.parseDouble(buffer.substring(startingIndex, endingIndex));
     }
 
     public int parseShareAmount(){
         int startingIndex = 0;
         int endingIndex = 0;
-        for(int i = 0; i < BUFFER.length(); i++){
-            if(Character.isDigit(BUFFER.charAt(i))){
+        for(int i = 0; i < buffer.length(); i++){
+            if(Character.isDigit(buffer.charAt(i))){
                 startingIndex = i;
                 int j = i;
-                while(Character.isDigit(BUFFER.charAt(j))){
+                while(Character.isDigit(buffer.charAt(j))){
                     j++;
                 }
                 endingIndex = j;
                 break;
             }
         }
-        return Integer.parseInt(BUFFER.substring(startingIndex, endingIndex));
+        return Integer.parseInt(buffer.substring(startingIndex, endingIndex));
     }
 
-    public static Date parseDate(Message message){
+    public Date parseDate(){
         try {
-            return message.getSentDate();
+            return MESSAGE.getSentDate();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -90,11 +97,11 @@ public class MailParser {
     }
 
     public boolean validEmail(){
-        return BUFFER.contains("was executed");
+        return buffer.contains("was executed");
     }
 
     public Position newPosition(Message currentMessage) {
-        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(currentMessage), parseOrderType());
+        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType());
     }
 
 }

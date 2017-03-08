@@ -23,25 +23,11 @@ public class Testing {
         }
 
         for(int i = 0; i < records.size(); i++){
-            String buffer = MailHelper.getMessageContent(records.get(i), new StringBuilder());
-            MailParser ph = new MailParser(buffer);
+            MailParser ph = new MailParser(records.get(i));
             if(ph.validEmail()) {
                 System.out.println(ph.newPosition(records.get(i)).toString());
-//                System.out.println(records.get(i).getSentDate().toString());
-//                System.out.println(buffer + "\n\n\n\n\n");
-//                System.out.println("Ticker: " + ph.parseTicker());
-//                System.out.println("Share Amount: " + ph.parseShareAmount());
-//                System.out.println("Share Price: " + ph.parseSharePrice());
-//                System.out.println("Order Type: " + ph.parseOrderType().getString());
             }
         }
-//        String buffer = MailHelper.getMessageContent(records.get(records.size()-1), new StringBuilder());
-//        MailParser ph = new MailParser(buffer);
-//        System.out.println(buffer + "\n\n\n\n\n");
-//        System.out.println("Ticker: " + ph.parseTicker());
-//        System.out.println("Share Amount: " + ph.parseShareAmount());
-//        System.out.println("Share Price: " + ph.parseSharePrice());
-//        System.out.println("Order Type: " + ph.parseOrderType().getString());
     }
 
 }
