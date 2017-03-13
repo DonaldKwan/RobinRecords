@@ -25,8 +25,8 @@ public class Alert {
 
     private HashMap<String, HashMap<DoubleWrapper, BOUND>> tickers;
 
-    public Alert(HashMap[] tickers){
-        tickers = tickers;
+    public Alert(){
+        tickers = new HashMap<>();
     }
 
     public void addTicker(String ticker, double priceTarget, BOUND bound){

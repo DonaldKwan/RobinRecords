@@ -11,6 +11,20 @@ import java.util.Date;
  */
 public class Position {
 
+    public enum ORDER {
+        MARKET("market order"), LIMIT("limit order"), STOP_LOSS("stop loss"), STOP_LIMIT("stop limit");
+
+        private String orderString;
+
+        ORDER(String orderString){
+            this.orderString = orderString;
+        }
+
+        public String getString(){
+            return orderString;
+        }
+    }
+
     private final String TICKER;
     private final BigDecimal SHARE_PRICE;
     private final int SHARE_AMOUNT;
