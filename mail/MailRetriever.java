@@ -7,10 +7,10 @@ import java.util.Properties;
 /**
  * Created by defq0n on 3/6/17.
  *
- *  MailHelper is a simple static class that can retrieve a users inbox and sort through the messages for
+ *  MailRetriever is a simple static class that can retrieve a users inbox and sort through the messages for
  *  messages from Robinhood. The content of the messages can also easily be returned.
  */
-public class MailHelper {
+public class MailRetriever {
 
     public enum GMAIL {
         PROTOCOL_URI("mail.store.protocol"),

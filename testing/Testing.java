@@ -1,7 +1,7 @@
 package com.eahlbrecht.robinrecords.testing;
 
 import com.eahlbrecht.robinrecords.Credentials;
-import com.eahlbrecht.robinrecords.mail.MailHelper;
+import com.eahlbrecht.robinrecords.mail.MailRetriever;
 import com.eahlbrecht.robinrecords.parsing.MailParser;
 
 import javax.mail.Message;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class Testing {
 
     public static void testParsing() throws MessagingException {
-        Message[] messages = MailHelper.retrieveMessages(Credentials.username, Credentials.password, MailHelper.GMAIL.PROTOCOL_URI.getContent(), MailHelper.GMAIL.PROTOCOL.getContent(), MailHelper.GMAIL.HOST.getContent());
-        ArrayList<Message> records = MailHelper.getRobinhoodEmails(messages, 100);
+        Message[] messages = MailRetriever.retrieveMessages(Credentials.username, Credentials.password, MailRetriever.GMAIL.PROTOCOL_URI.getContent(), MailRetriever.GMAIL.PROTOCOL.getContent(), MailRetriever.GMAIL.HOST.getContent());
+        ArrayList<Message> records = MailRetriever.getRobinhoodEmails(messages, 100);
         for(int i = 0; i < records.size(); i++){
             MailParser ph = new MailParser(records.get(i));
             if(ph.validEmail()) {

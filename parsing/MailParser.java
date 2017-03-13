@@ -1,6 +1,6 @@
 package com.eahlbrecht.robinrecords.parsing;
 
-import com.eahlbrecht.robinrecords.mail.MailHelper;
+import com.eahlbrecht.robinrecords.mail.MailRetriever;
 import com.eahlbrecht.robinrecords.market.ORDER;
 import com.eahlbrecht.robinrecords.market.Position;
 
@@ -27,7 +27,7 @@ public class MailParser {
 
     public MailParser(Message message){
         MESSAGE = message;
-        buffer = MailHelper.getMessageContent(message, new StringBuilder());
+        buffer = MailRetriever.getMessageContent(message, new StringBuilder());
     }
 
     /**
