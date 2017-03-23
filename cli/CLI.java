@@ -13,6 +13,11 @@ import java.util.Scanner;
  *      pastTrades()
  *      quit()
  *      importData()
+ *
+ *      TODO:   figure out data handling
+ *      TODO:   algorithm trading?
+ *      TODO:   YahooFinance jar
+ *
  */
 public class CLI {
 

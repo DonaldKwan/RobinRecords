@@ -1,7 +1,6 @@
 package com.eahlbrecht.robinrecords.parsing;
 
 import com.eahlbrecht.robinrecords.mail.MailRetriever;
-import com.eahlbrecht.robinrecords.market.ORDER;
 import com.eahlbrecht.robinrecords.market.Position;
 
 import javax.mail.Message;
@@ -35,9 +34,9 @@ public class MailParser {
      *
      * @return  the order type, otherwise null if the order can't be parsed
      * */
-    public ORDER parseOrderType(){
+    public Position.ORDER parseOrderType(){
         String buffer = this.buffer.toLowerCase();
-        for(ORDER order : ORDER.values()){
+        for(Position.ORDER order : Position.ORDER.values()){
             if(buffer.contains(order.getString())){
                 return order;
             }
