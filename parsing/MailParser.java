@@ -124,6 +124,15 @@ public class MailParser {
     }
 
     /**
+     * Parses the message and returns a true boolean if the position was bought
+     *
+     * @return  true if the user bought their position
+     * */
+    public boolean parseBought(){
+        return buffer.contains("buy");
+    }
+
+    /**
      * Returns whether the current message from Robinhood is a valid email - meaning
      * there was an order placed.
      *
@@ -139,7 +148,7 @@ public class MailParser {
      * @return new position object
      * */
     public Position newPosition(Message currentMessage) {
-        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType());
+        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType(), parseBought());
     }
 
 }

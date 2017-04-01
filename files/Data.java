@@ -8,8 +8,15 @@ package com.eahlbrecht.robinrecords.files;
  */
 public class Data extends FileHelper{
 
-    public Data(String textFile) {
-        super(textFile);
+    private final String CURRENT_POS_FILENAME;
+
+    public Data(String dataFile, String currentPositionFilename) {
+        super(dataFile);
+        CURRENT_POS_FILENAME = currentPositionFilename;
     }
+
+
+
+
 
 }

@@ -31,14 +31,16 @@ public class Position {
     private final Date DATE;
     private final ORDER ORDER_TYPE;
     private final BigDecimal totalPrice;
+    private final boolean BOUGHT;
 
-    public Position(String ticker, double sharePrice, int shareAmount, Date date, ORDER order){
+    public Position(String ticker, double sharePrice, int shareAmount, Date date, ORDER order, boolean bought){
         TICKER = ticker;
         SHARE_PRICE = BigDecimal.valueOf(sharePrice);
         SHARE_AMOUNT = shareAmount;
         DATE = date;
         ORDER_TYPE = order;
         totalPrice = new BigDecimal(sharePrice * shareAmount).setScale(2, RoundingMode.HALF_EVEN);
+        BOUGHT = bought;
     }
 
     /**
@@ -93,6 +95,15 @@ public class Position {
      * */
     public BigDecimal getTotalPrice(){
         return totalPrice;
+    }
+
+    /**
+     * Returns whether the user bought or sold their position.
+     *
+     * @return  true if the user bought their position
+     * */
+    public boolean bought(){
+        return BOUGHT;
     }
 
     @Override

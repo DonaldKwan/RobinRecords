@@ -61,6 +61,8 @@ public class PriceAlert implements Alert {
     }
 
     private void runHelper(){
+        //TODO: will probably have to do with locking
+        //TODO: add timer
         while(true) {
             if (!tickerArray.isEmpty()) {
                 for (int i = 0; i < tickerArray.size(); i++) {
