@@ -14,6 +14,10 @@ import java.util.ArrayList;
 public class Testing {
 
     public static void testParsing() throws MessagingException {
+
+    }
+
+    public static void testGetPositionsFromEmail(){
         Message[] messages = MailRetriever.retrieveMessages(Credentials.username, Credentials.password, MailRetriever.GMAIL.PROTOCOL_URI.getContent(), MailRetriever.GMAIL.PROTOCOL.getContent(), MailRetriever.GMAIL.HOST.getContent());
         ArrayList<Message> records = MailRetriever.getRobinhoodEmails(messages, 100);
         for(int i = 0; i < records.size(); i++){
@@ -22,6 +26,10 @@ public class Testing {
                 System.out.println(ph.newPosition(records.get(i)).toString());
             }
         }
+    }
+
+    public static void testAddPositions(){
+
     }
 
 }

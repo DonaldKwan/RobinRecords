@@ -15,12 +15,20 @@ public class Account {
 
     //current positions will hold multiples of tickers, the plan is when displaying the information to combine it
     // when selling shares, the plan is to work off of total price in stead of share price
-    public ArrayList<Position> currentPositions;
-    public ArrayList<Position> previousPositions;
+    private ArrayList<Position> currentPositions;
+    private ArrayList<Position> previousPositions;
 
     public Account(){
         currentPositions = new ArrayList<>();
         previousPositions = new ArrayList<>();
+    }
+
+    public ArrayList<Position> getCurrentPositions(){
+        return currentPositions;
+    }
+
+    public ArrayList<Position> getPreviousPositions(){
+        return previousPositions;
     }
 
     public void addPosition(Position position){
@@ -29,7 +37,7 @@ public class Account {
             if(currentHolding == null){
                 currentPositions.add(position);
             } else {
-                position.addAdditionalPosition(position);
+                currentHolding.addAdditionalPosition(position);
             }
         }else {
             //there are a few different things we have to take care of here
@@ -127,5 +135,34 @@ public class Account {
 
     private void removeCurrentPosition(Position p){
         currentPositions.remove(getCurrentPositionIndex(p));
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        if(currentPositions.size() == 0 && previousPositions.size() == 0){
+            builder.append("This account is currently empty\n");
+        } else {
+            builder.append("Current Positions:\n");
+            for(int i = 0; i < currentPositions.size(); i++){
+                builder.append("\t" + currentPositions.get(i).toString() + "\n");
+                System.out.println("------------------------ADDITIONAL POS----: " + currentPositions.get(i).getAdditionalPositions().size());
+                if(currentPositions.get(i).getAdditionalPositions().size() > 0){
+                    for(Position p : currentPositions.get(i).getAdditionalPositions()){
+                        builder.append("\t\t" + p.toString() + "\n");
+                    }
+                }
+            }
+            builder.append("Previous Positions:\n");
+            for(int i = 0; i < previousPositions.size(); i++){
+                builder.append("\t" + previousPositions.get(i).toString() + "\n");
+                if(previousPositions.get(i).getAdditionalPositions().size() > 0){
+                    for(Position p : previousPositions.get(i).getAdditionalPositions()){
+                        builder.append("\t\t" + p.toString() + "\n");
+                    }
+                }
+            }
+        }
+        return builder.toString();
     }
 }
