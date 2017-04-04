@@ -2,6 +2,7 @@ package com.eahlbrecht.robinrecords.market;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
 public class Position {
 
     public enum ORDER {
-        MARKET("market order"), LIMIT("limit order"), STOP_LOSS("stop loss"), STOP_LIMIT("stop limit");
+        MARKET("market order"), LIMIT("limit order"), STOP_LOSS("stop loss"), STOP_LIMIT("stop limit"), BOUGHT("buy"), SOLD("sell");
 
         private String orderString;
 
@@ -25,6 +26,7 @@ public class Position {
         }
     }
 
+    //starting data
     private final String TICKER;
     private final BigDecimal SHARE_PRICE;
     private final int SHARE_AMOUNT;
@@ -33,7 +35,14 @@ public class Position {
     private final BigDecimal totalPrice;
     private final boolean BOUGHT;
 
-    public Position(String ticker, double sharePrice, int shareAmount, Date date, ORDER order, boolean bought){
+    //inp rogress data
+    private boolean completed = false;
+    private int remainingShares;
+    private ArrayList<Position> additionalPositions;
+
+
+    public Position(String ticker, double sharePrice, int shareAmount, Date date, ORDER order, boolean bought, boolean completed){
+        //starting data
         TICKER = ticker;
         SHARE_PRICE = BigDecimal.valueOf(sharePrice);
         SHARE_AMOUNT = shareAmount;
@@ -41,6 +50,11 @@ public class Position {
         ORDER_TYPE = order;
         totalPrice = new BigDecimal(sharePrice * shareAmount).setScale(2, RoundingMode.HALF_EVEN);
         BOUGHT = bought;
+
+        //in progress data
+        this.completed = completed;
+        remainingShares = shareAmount;
+        additionalPositions = new ArrayList<>();
     }
 
     /**
@@ -104,6 +118,44 @@ public class Position {
      * */
     public boolean bought(){
         return BOUGHT;
+    }
+
+    public boolean isCompleted(){
+        return completed;
+    }
+
+    public void setCompletion(){
+        completed = true;
+    }
+
+    public int getRemainingShares(){
+        return remainingShares;
+    }
+
+    public void setRemainingShares(int amount){
+        remainingShares += amount;
+    }
+
+    public void addAdditionalPosition(Position position){
+        additionalPositions.add(position);
+    }
+
+    public ArrayList<Position> getAdditionalPositions(){
+        return additionalPositions;
+    }
+
+    public boolean removeAdditionalPosition(Position position){
+        for(int i = 0; i < additionalPositions.size(); i++){
+            if(additionalPositions.get(i).equals(position)){
+                additionalPositions.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int amountOfAdditionalPositions(){
+        return additionalPositions.size();
     }
 
     @Override

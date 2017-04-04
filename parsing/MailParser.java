@@ -148,7 +148,10 @@ public class MailParser {
      * @return new position object
      * */
     public Position newPosition(Message currentMessage) {
-        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType(), parseBought());
+        if(parseBought()){
+            return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType(), parseBought(), false);
+        }
+        return new Position(parseTicker(), parseSharePrice(), parseShareAmount(), parseDate(), parseOrderType(), parseBought(), true);
     }
 
 }
