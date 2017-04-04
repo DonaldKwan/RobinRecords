@@ -167,5 +167,4 @@ public class Position {
                 .append(totalPrice.doubleValue()).append(",")
                 .append(ORDER_TYPE.getString()).append(">").toString();
     }
-
 }

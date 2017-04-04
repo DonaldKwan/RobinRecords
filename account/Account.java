@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * Created by defq0n on 3/4/17.
  *
  * Used to keep track of account data, i.e. name, current holdings, set alerts, etc
+ *
+ * TODO when determining profit, base off of total price instead of each position
  */
 public class Account {
 
@@ -22,13 +24,7 @@ public class Account {
     }
 
     public void addPosition(Position position){
-        String ticker = position.getTicker();
-        Position currentHolding = null;
-        for(Position p : currentPositions){
-            if(p.getTicker().equals(ticker)){
-                currentHolding = p;
-            }
-        }
+        Position currentHolding = getCurrentHolding(position.getTicker());
         if(position.bought()){
             if(currentHolding == null){
                 currentPositions.add(position);
@@ -45,24 +41,91 @@ public class Account {
                 //user did not import or glitch
                 //TODO
             } else if(currentHolding.amountOfAdditionalPositions() == 0){
-                if(currentHolding.getShareAmount() == position.getShareAmount()){
+                //this manages the users one and only position
+                if(currentHolding.getRemainingShares() == position.getShareAmount()){
                     currentHolding.setCompletion();
-                    int currentPositionIndex = 0;
-                    for(int i = 0; i < currentPositions.size(); i++){
-                        if(currentPositions.get(i).equals(currentHolding)){
-                            currentPositionIndex = i;
-                        }
-                    }
-                    previousPositions.add(currentHolding);
-                    currentPositions.remove(currentPositionIndex);
-                    previousPositions.add(position);
+                    addPreviousPosition(new Position[]{currentHolding, position});
+                    removeCurrentPosition(currentHolding);
                 } else {
                     currentHolding.setRemainingShares(-position.getShareAmount());
-                    previousPositions.add(position);
+                    addPreviousPosition(new Position[]{position});
                 }
             } else {
-                
+                //this manages if the user has more than one position
+                //will complete positions with lowest amount of shares first
+                int shareCount = position.getRemainingShares();
+                while(shareCount != 0) {
+                    Position lowestPosition = getLowestPosition(currentHolding);
+                    if(position.getRemainingShares() > lowestPosition.getRemainingShares()){
+                        position.setRemainingShares(-lowestPosition.getRemainingShares());
+                        shareCount -= lowestPosition.getRemainingShares();
+                        //loop to get next lowest position and remove current lowestPosition
+                        addPreviousPosition(new Position[]{lowestPosition});
+                        currentHolding.removeAdditionalPosition(lowestPosition);
+                    } else if(position.getRemainingShares() < lowestPosition.getRemainingShares()){
+                        //additional position with the lowest amount of shares has less than the
+                        // new position
+                        //update lowestPosition shares to remove new positions shares
+                        lowestPosition.setRemainingShares(-position.getRemainingShares());
+                        addPreviousPosition(new Position[]{position});
+                        shareCount = 0;
+                    } else if(position.getRemainingShares() == lowestPosition.getRemainingShares()){
+                        //additional positions with the lowest amount of shares has the same as
+                        //the new position
+                        addPreviousPosition(new Position[]{position, lowestPosition});
+                        currentHolding.removeAdditionalPosition(lowestPosition);
+                        shareCount = 0;
+                    }
+                }
             }
         }
+    }
+
+    private Position getLowestPosition(Position currentHolding){
+        Position lowestPosition = null;
+        for (Position p : currentHolding.getAdditionalPositions()) {
+            if (lowestPosition == null) {
+                lowestPosition = p;
+            } else if (p.getRemainingShares() < lowestPosition.getRemainingShares()) {
+                lowestPosition = p;
+            }
+        }
+        return lowestPosition;
+    }
+
+    private int getCurrentPositionIndex(Position currentHolding){
+        int currentPositionIndex = 0;
+        for(int i = 0; i < currentPositions.size(); i++){
+            if(currentPositions.get(i).equals(currentHolding)){
+                currentPositionIndex = i;
+            }
+        }
+        return currentPositionIndex;
+    }
+
+    private Position getCurrentHolding(String ticker){
+        Position currentHolding = null;
+        for(Position p : currentPositions){
+            if(p.getTicker().equals(ticker)){
+                currentHolding = p;
+            }
+        }
+        return currentHolding;
+    }
+
+    private void addPreviousPosition(Position[] positions){
+        for(Position p : positions){
+            previousPositions.add(p);
+        }
+    }
+
+    private void addCurrentPosition(Position[] positions){
+        for(Position p : positions){
+            currentPositions.add(p);
+        }
+    }
+
+    private void removeCurrentPosition(Position p){
+        currentPositions.remove(getCurrentPositionIndex(p));
     }
 }
