@@ -68,6 +68,7 @@ public class Account {
                         position.setRemainingShares(-lowestPosition.getRemainingShares());
                         shareCount -= lowestPosition.getRemainingShares();
                         //loop to get next lowest position and remove current lowestPosition
+                        position.setCompletion();
                         addPreviousPosition(new Position[]{lowestPosition});
                         currentHolding.removeAdditionalPosition(lowestPosition);
                     } else if(position.getRemainingShares() < lowestPosition.getRemainingShares()){
@@ -75,11 +76,14 @@ public class Account {
                         // new position
                         //update lowestPosition shares to remove new positions shares
                         lowestPosition.setRemainingShares(-position.getRemainingShares());
+                        position.setCompletion();
                         addPreviousPosition(new Position[]{position});
                         shareCount = 0;
                     } else if(position.getRemainingShares() == lowestPosition.getRemainingShares()){
                         //additional positions with the lowest amount of shares has the same as
                         //the new position
+                        position.setCompletion();
+                        lowestPosition.setCompletion();
                         addPreviousPosition(new Position[]{position, lowestPosition});
                         currentHolding.removeAdditionalPosition(lowestPosition);
                         shareCount = 0;
@@ -146,7 +150,6 @@ public class Account {
             builder.append("Current Positions:\n");
             for(int i = 0; i < currentPositions.size(); i++){
                 builder.append("\t" + currentPositions.get(i).toString() + "\n");
-                System.out.println("------------------------ADDITIONAL POS----: " + currentPositions.get(i).getAdditionalPositions().size());
                 if(currentPositions.get(i).getAdditionalPositions().size() > 0){
                     for(Position p : currentPositions.get(i).getAdditionalPositions()){
                         builder.append("\t\t" + p.toString() + "\n");

@@ -14,7 +14,8 @@ import static java.lang.System.exit;
 public class TestAccount {
 
     public static void main(String[] args){
-        testAddBuyPosition();
+        //testAddBuyPosition();
+        testBuySellPosition();
     }
 
     private static void l(String s){
@@ -92,6 +93,49 @@ public class TestAccount {
         l("-----Ending testAddBuyPosition()-----\n\n");
     }
 
+    public static void testBuySellPosition(){
+        l("-----Testing testBuySellPosition()-----");
 
+        // Create a new empty account
+        Account account = new Account();
+        l("Creating a new account");
+        l(account.toString());
+
+        // Assert that currentPositions.size() == 0 && previousPositions.size() == 0
+        assertTrue(account.getCurrentPositions().size() == 0 && account.getPreviousPositions().size() == 0);
+        l("Assertion of account.getCurrentPositions().size() == 0 && account.getPreviousPositions().size() == 0 passed");
+
+        // Create a new position buying the TEST stock
+        Position posBuy = new Position("TEST",
+                1.00,
+                5,
+                Date.from(Instant.EPOCH),
+                Position.ORDER.MARKET,
+                true,
+                false);
+        account.addPosition(posBuy);
+        l("Adding one buy position of TEST");
+        l(account.toString());
+
+        assertTrue(account.getCurrentPositions().size() == 1);
+        l("account.getCurrentPositions().size() == 1 passed");
+
+        // Create a new position selling the TEST stock
+        Position posSell = new Position("TEST",
+                1.50,
+                5,
+                Date.from(Instant.EPOCH),
+                Position.ORDER.MARKET,
+                false,
+                false);
+        account.addPosition(posSell);
+        l("Adding one sell position of TEST");
+        l(account.toString());
+
+        assertTrue(account.getCurrentPositions().size() == 0 && account.getPreviousPositions().size() == 2);
+        l("account.getCurrentPositions().size() == 0 && account.getPreviousPositions().size() == 2");
+
+        l("-----Ending testBuySellPosition()-----");
+    }
 
 }
