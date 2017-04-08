@@ -34,6 +34,7 @@ public class Position {
     private final ORDER ORDER_TYPE;
     private final BigDecimal totalPrice;
     private final boolean BOUGHT;
+    private final String buysell;
 
     //inp rogress data
     private boolean completed = false;
@@ -55,6 +56,12 @@ public class Position {
         this.completed = completed;
         remainingShares = shareAmount;
         additionalPositions = new ArrayList<>();
+
+        if(bought){
+            buysell = "buy";
+        } else {
+            buysell = "sell";
+        }
     }
 
     /**
@@ -132,8 +139,16 @@ public class Position {
         return remainingShares;
     }
 
+    public String getBuy(){
+        String b = "buy";
+        if(!BOUGHT){
+            b = "sell";
+        }
+        return b;
+    }
+
     public void setRemainingShares(int amount){
-        remainingShares += amount;
+        remainingShares = amount;
     }
 
     public void addAdditionalPosition(Position position){
@@ -154,17 +169,46 @@ public class Position {
         return false;
     }
 
+    public void setAdditionalPositionShares(Position p, int amount){
+        for(Position pos : additionalPositions){
+            if(p.equals(pos)){
+                pos.setRemainingShares(amount);
+            }
+        }
+    }
+
     public int amountOfAdditionalPositions(){
         return additionalPositions.size();
     }
 
     @Override
     public String toString(){
-        return new StringBuilder().append("<").append(TICKER).append(",")
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\t<").append(TICKER).append(",")
                 .append(SHARE_PRICE).append(",")
                 .append(SHARE_AMOUNT).append(",")
                 .append(DATE.toString()).append(",")
                 .append(totalPrice.doubleValue()).append(",")
-                .append(ORDER_TYPE.getString()).append(">").toString();
+                .append(ORDER_TYPE.getString()).append(",")
+                .append(buysell).append(">")
+                .append("DEBUGGING: " + getRemainingShares() + "\n").toString();
+
+        for(int i = 0; i < additionalPositions.size(); i++){
+            Position p = additionalPositions.get(i);
+            sb.append("\t\t<").append(p.getTicker()).append(",")
+                    .append(p.getSharePrice()).append(",")
+                    .append(p.getShareAmount()).append(",")
+                    .append(p.getDate().toString()).append(",")
+                    .append(p.getTotalPrice().doubleValue()).append(",")
+                    .append(p.getOrderType().getString()).append(",")
+                    .append(p.getBuy()).append(">")
+                    .append("DEBUGGING: " + getRemainingShares() + "\n").toString();
+        }
+
+        return sb.toString();
+
+        //TODO remove debugging
     }
 }
