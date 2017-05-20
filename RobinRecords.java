@@ -1,5 +1,6 @@
 package com.eahlbrecht.robinrecords;
 
+import com.eahlbrecht.robinrecords.exporter.Exporter;
 import com.eahlbrecht.robinrecords.testing.Testing;
 
 /**
@@ -10,7 +11,7 @@ public class RobinRecords {
 
     public static void main(String[] args) {
         try{
-            Testing.testParsing();
+            Exporter.simpleExport("test");
         } catch(Exception e){
             e.printStackTrace();
         }

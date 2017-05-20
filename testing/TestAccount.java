@@ -113,10 +113,10 @@ public class TestAccount {
 //        account.addPosition(pos3);
 //        l(account.toString());
 //
-//        //currentPositions size should still be two and pos1.getAdditionalPositions.size() should be 1
+//        //currentPositions size should still be two and pos1.getPartialPositions.size() should be 1
 //        assertTrue(account.getCurrentPositions().size() == 2);
 //        l("Assertion of currentPosition == 2 passed");
-//        assertTrue(pos1.getAdditionalPositions().size() == 1);
+//        assertTrue(pos1.getPartialPositions().size() == 1);
 //        l("Asserition of pos1.getAdditionalPosition.size() == 1 passed");
 //
 //        l("-----Ending testAddBuyPosition()-----\n\n");

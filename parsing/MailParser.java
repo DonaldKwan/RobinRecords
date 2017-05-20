@@ -129,7 +129,8 @@ public class MailParser {
      * @return  true if the user bought their position
      * */
     public boolean parseBought(){
-        return buffer.contains("buy");
+        String newBuffer = buffer.substring(0, 200);
+        return newBuffer.contains("buy");
     }
 
     /**

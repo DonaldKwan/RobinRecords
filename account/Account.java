@@ -1,7 +1,6 @@
 package com.eahlbrecht.robinrecords.account;
 
 import com.eahlbrecht.robinrecords.market.Position;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
@@ -49,12 +48,13 @@ public class Account {
                 System.out.println("NULLNULLNULLNULLNULLNULLNULLNULLNULL");
                 //TODO
             } else {
-                int amountOfAdditionalPositions = currentPosition.amountOfAdditionalPositions();
-                if(amountOfAdditionalPositions == 0){
+                int amountOfPartialPositions = currentPosition.amountOfPartialPositions();
+                if(amountOfPartialPositions == 0){
                     // there are no additional positions, handle here
                 } else {
-                    Position lowestAdditionalPosition = currentLowestAdditionalPosition(currentPosition);
+                    Position lowestAdditionalPosition = currentLowestPartialPosition(currentPosition);
                     if(lowestAdditionalPosition.getRemainingShares() == newPosition.getRemainingShares()){
+                        //remove current company position from currentPositions
 
                     } else if(lowestAdditionalPosition.getRemainingShares() < newPosition.getRemainingShares()){
 
@@ -75,8 +75,18 @@ public class Account {
         return null;
     }
 
-    private Position currentLowestAdditionalPosition(Position currentPosition){
-        ArrayList<Position> additionalPositions = currentPosition.getAdditionalPositions();
+    private boolean removeCurrentPosition(String ticker){
+        for(int i = 0; i < currentPositions.size(); i++){
+            if(currentPositions.get(i).getTicker().equals(ticker)){
+                currentPositions.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Position currentLowestPartialPosition(Position currentPosition){
+        ArrayList<Position> additionalPositions = currentPosition.getPartialPositions();
         Position lowestPosition = null;
         for(int i = 0; i < additionalPositions.size(); i++){
             if(lowestPosition == null){

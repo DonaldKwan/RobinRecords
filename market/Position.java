@@ -39,7 +39,7 @@ public class Position {
     //inp rogress data
     private boolean completed = false;
     private int remainingShares;
-    private ArrayList<Position> additionalPositions;
+    private ArrayList<Position> partialPositions;
 
 
     public Position(String ticker, double sharePrice, int shareAmount, Date date, ORDER order, boolean bought, boolean completed){
@@ -55,7 +55,7 @@ public class Position {
         //in progress data
         this.completed = completed;
         remainingShares = shareAmount;
-        additionalPositions = new ArrayList<>();
+        partialPositions = new ArrayList<>();
 
         if(bought){
             buysell = "buy";
@@ -152,33 +152,46 @@ public class Position {
     }
 
     public void addAdditionalPosition(Position position){
-        additionalPositions.add(position);
+        partialPositions.add(position);
     }
 
-    public ArrayList<Position> getAdditionalPositions(){
-        return additionalPositions;
+    public ArrayList<Position> getPartialPositions(){
+        return partialPositions;
     }
 
-    public boolean removeAdditionalPosition(Position position){
-        for(int i = 0; i < additionalPositions.size(); i++){
-            if(additionalPositions.get(i).equals(position)){
-                additionalPositions.remove(i);
+    public boolean removePartialPosition(Position position){
+        for(int i = 0; i < partialPositions.size(); i++){
+            if(partialPositions.get(i).equals(position)){
+                partialPositions.remove(i);
                 return true;
             }
         }
         return false;
     }
 
-    public void setAdditionalPositionShares(Position p, int amount){
-        for(Position pos : additionalPositions){
+    public void setPartialPositionShares(Position p, int amount){
+        for(Position pos : partialPositions){
             if(p.equals(pos)){
                 pos.setRemainingShares(amount);
             }
         }
     }
 
-    public int amountOfAdditionalPositions(){
-        return additionalPositions.size();
+    public int amountOfPartialPositions(){
+        return partialPositions.size();
+    }
+
+    public String toCSVString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(DATE.toString()).append(",")
+                .append(TICKER).append(",")
+                .append(SHARE_PRICE).append(",")
+                .append(SHARE_AMOUNT).append(",")
+                .append(totalPrice.doubleValue()).append(",")
+                .append(ORDER_TYPE.getString()).append(",")
+                .append(buysell);
+
+        return sb.toString();
     }
 
     @Override
@@ -195,8 +208,8 @@ public class Position {
                 .append(buysell).append(">")
                 .append("DEBUGGING: " + getRemainingShares() + "\n").toString();
 
-        for(int i = 0; i < additionalPositions.size(); i++){
-            Position p = additionalPositions.get(i);
+        for(int i = 0; i < partialPositions.size(); i++){
+            Position p = partialPositions.get(i);
             sb.append("\t\t<").append(p.getTicker()).append(",")
                     .append(p.getSharePrice()).append(",")
                     .append(p.getShareAmount()).append(",")

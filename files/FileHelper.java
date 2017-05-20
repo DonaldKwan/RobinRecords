@@ -139,7 +139,7 @@ public class FileHelper {
             try {
                 writer = new BufferedWriter(new FileWriter("./data/" + textFile));
                 writer.write(currentFileString);
-                writer.write(writeString);
+                writer.write(writeString + "\n");
                 writer.close();
                 return true;
             } catch (Exception e) {
